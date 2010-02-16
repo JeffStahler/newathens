@@ -34,11 +34,57 @@ class HeaderTest < ActiveSupport::TestCase
     assert r.errors.on(:user_id)
   end
   
-  test "random" do
+  test "random with one header" do
+    r1 = Header.make
+    random = Header.random
+    assert random == r1
+  end
+  
+  test "random with two headers" do
     r1 = Header.make
     r2 = Header.make
     random = Header.random
     assert (random == r1) || (random == r2)
+  end
+  
+  test "random with no headers" do
+    Header.destroy_all 
+    assert_nothing_raised do
+      Header.random
+    end
+  end
+
+  test "random with headers all with negative votes" do
+    Header.destroy_all
+    r1 = Header.make 
+    r2 = Header.make
+    r3 = Header.make 
+    r1.vote_down
+    r1.reload
+    r2.vote_down
+    r2.reload
+    r3.vote_down    
+    r3.reload
+    assert_nothing_raised do
+      Header.random
+    end
+  end
+
+  test "random with one header with positive votes" do
+    Header.destroy_all
+    r1 = Header.make 
+    r2 = Header.make
+    r3 = Header.make 
+    r1.vote_down
+    r1.reload
+    r2.vote_down
+    r2.reload
+    r3.vote_up    
+    r3.reload
+    assert_nothing_raised do
+      random = Header.random
+      assert r3 == random
+    end
   end
   
   test "vote_up/vote_down" do
@@ -51,5 +97,4 @@ class HeaderTest < ActiveSupport::TestCase
     r.reload
     assert_equal 0, r.votes
   end
-      
 end

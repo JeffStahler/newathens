@@ -1,11 +1,11 @@
 class Header < ActiveRecord::Base
-    
+  
   include PaperclipSupport
   
   attr_accessible :description
   
   belongs_to :user
-    
+  
   if CONFIG['s3']
     has_attached_file :attachment, :storage => :s3, :path => "headers/:filename", :bucket => CONFIG['s3_bucket_name'],
                       :s3_host_alias => CONFIG['s3_host_alias'], :url => CONFIG['s3_host_alias'] ? ':s3_alias_url' : nil,
@@ -19,10 +19,20 @@ class Header < ActiveRecord::Base
   validates_attachment_content_type :attachment, :content_type => /image/
   
   def self.random
-    ids = connection.select_all("SELECT id FROM headers where votes >= 0")
-    find(ids[rand(ids.length)]["id"].to_i) unless ids.blank?
+    headers = all(:conditions => ['votes >= 0'], :order => 'created_at') # find eligible headers
+    return nil if headers.blank? # use default header if none available
+    total_votes = Header.sum('votes')
+    methodology_selector = rand # used to choose one of the 3 methodologies for selecting a random header
+    if (methodology_selector < 0.333) || (total_votes == 0) # pick a random header with votes >= 0
+      headers[rand(headers.count)]
+    elsif methodology_selector < 0.666 # pick a random header from the 5 newest headers
+      headers[rand([headers.count,5].min)]
+    else # pick a random header favoring headers with more votes (roulette wheel selection algorithm)
+      weighted_array = headers.inject([]) { |sum, header| sum << header.votes + (sum.last || 0) }
+      headers[weighted_array.detect {|i| rand(total_votes) < i}]
+    end
   end
-    
+  
   def vote_up
     self.votes = self.votes + 1
     self.save(false)
@@ -32,5 +42,4 @@ class Header < ActiveRecord::Base
     self.votes = self.votes - 1
     self.save(false)
   end
-  
 end

@@ -21,7 +21,7 @@ class Header < ActiveRecord::Base
   def self.random
     headers = all(:conditions => ['votes >= 0'], :order => 'created_at') # find eligible headers
     return nil if headers.blank? # use default header if none available
-    total_votes = Header.sum('votes')
+    total_votes = headers.inject(0){|sum, header|header.votes + sum}
     methodology_selector = rand # used to choose one of the 3 methodologies for selecting a random header
     if (methodology_selector < 0.333) || (total_votes == 0) # pick a random header with votes >= 0
       headers[rand(headers.count)]
@@ -29,7 +29,14 @@ class Header < ActiveRecord::Base
       headers[rand([headers.count,5].min)]
     else # pick a random header favoring headers with more votes (roulette wheel selection algorithm)
       weighted_array = headers.inject([]) { |sum, header| sum << header.votes + (sum.last || 0) }
-      headers[weighted_array.detect {|i| rand(total_votes) < i}]
+      picker = rand(total_votes)
+      index = weighted_array.index(weighted_array.detect {|i| picker <= i})
+      if index == nil
+        headers[headers.count]  
+      else
+        headers[index]
+      end
+
     end
   end
   

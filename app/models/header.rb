@@ -19,7 +19,7 @@ class Header < ActiveRecord::Base
   validates_attachment_content_type :attachment, :content_type => /image/
   
   def self.random
-    headers = all(:conditions => ['votes >= 0'], :order => 'created_at') # find eligible headers
+    headers = all(:conditions => ['votes >= 0'], :order => 'created_at desc') # find eligible headers
     return nil if headers.blank? # use default header if none available
     total_votes = headers.inject(0){|sum, header|header.votes + sum}
     methodology_selector = rand # used to choose one of the 3 methodologies for selecting a random header

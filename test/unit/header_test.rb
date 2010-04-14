@@ -97,4 +97,63 @@ class HeaderTest < ActiveSupport::TestCase
     r.reload
     assert_equal 0, r.votes
   end
+
+  test "test_randomness" do
+    #use pearsons chi square statistical test to confirm that headers 
+    #are close to what you would expect theoretically.
+    #this test can fail by random chance even if the algorithm is working
+    # however this should only happen once every 254,716,573 tests
+    # therefore, if this test fails, there is probably something wrong
+    # with the random header code.
+
+    total_votes = 0
+    eligibleheaders = 0
+    test_headers = Array.new
+    header_selected_counts = Array.new
+    
+    (0..19).each do |i| 
+      header_selected_counts[i] = 0
+      test_headers[i] = Header.make
+      test_headers[i].description = i.to_s
+      (rand(20)).times do
+      	test_headers[i].vote_up
+        test_headers[i].reload
+        total_votes += 1
+      end  
+      if test_headers[i].votes != 0
+        eligibleheaders +=1
+      end
+
+    end
+
+    x = 0
+    (1000).times do
+      x += 1
+      random = Header.random
+      header_selected_counts[random.description.to_i] += 1
+    end
+    theoretical_header_count = Array.new
+    chi_squared_statistic = 0
+    (0..19).each do |i|
+
+    if  test_headers[i].votes != 0
+      if i <= 4
+        theoretical_header_count[i] = (1000.to_f)*((1/3.to_f)*((1/5.to_f) + (1/eligibleheaders.to_f)+(test_headers[i].votes/total_votes.to_f)))
+      else
+        theoretical_header_count[i] = (1000.to_f)*((1/3.to_f)*((1/eligibleheaders.to_f)+(test_headers[i].votes/total_votes.to_f)))
+      end
+    end 
+
+    if test_headers[i].votes != 0
+      chi_squared_statistic += (((header_selected_counts[i] - theoretical_header_count[i]) ** 2)/theoretical_header_count[i])
+    end
+  end
+
+ 
+  assert chi_squared_statistic < 80 
+  end
+
+
+
+
 end

@@ -114,8 +114,9 @@ class HeaderTest < ActiveSupport::TestCase
     (0..19).each do |i| 
       header_selected_counts[i] = 0
       test_headers[i] = Header.make
+      sleep(1)
       test_headers[i].description = i.to_s
-      (rand(20)).times do
+      (rand(20)+1).times do
       	test_headers[i].vote_up
         test_headers[i].reload
         total_votes += 1
@@ -127,28 +128,32 @@ class HeaderTest < ActiveSupport::TestCase
     end
 
     x = 0
-    (1000).times do
+    num_of_random_calls = 1000
+    (num_of_random_calls).times do
       x += 1
       random = Header.random
       header_selected_counts[random.description.to_i] += 1
     end
     theoretical_header_count = Array.new
     chi_squared_statistic = 0
-    (0..19).each do |i|
-
-    if  test_headers[i].votes != 0
-      if i <= 4
-        theoretical_header_count[i] = (1000.to_f)*((1/3.to_f)*((1/5.to_f) + (1/eligibleheaders.to_f)+(test_headers[i].votes/total_votes.to_f)))
+    headers = Header.all(:conditions => ['votes >= 0'], :order => 'created_at desc') # find eligible headers
+    prob = 0
+    (0..headers.count-1).each do |k|
+      i = test_headers.index(headers[k])
+      theoretical_header_count[i] = 0
+      if headers[i].votes != nil
+        if k <= (0.2*headers.count)
+           theoretical_header_count[i] = (1/3.to_f)*(1/((0.2*headers.count).to_i).to_f)
+        end
+        theoretical_header_count[i] += (1/3.to_f)*(1/(headers.count).to_f + test_headers[i].votes/total_votes.to_f)
+        theoretical_header_count[i] = num_of_random_calls*theoretical_header_count[i]
       else
-        theoretical_header_count[i] = (1000.to_f)*((1/3.to_f)*((1/eligibleheaders.to_f)+(test_headers[i].votes/total_votes.to_f)))
+        theoretical_header_count = 0
       end
-    end 
-
     if test_headers[i].votes != 0
       chi_squared_statistic += (((header_selected_counts[i] - theoretical_header_count[i]) ** 2)/theoretical_header_count[i])
     end
-  end
-
+    end
  
   assert chi_squared_statistic < 80 
   end

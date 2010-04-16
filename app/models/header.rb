@@ -25,8 +25,8 @@ class Header < ActiveRecord::Base
     methodology_selector = rand # used to choose one of the 3 methodologies for selecting a random header
     if (methodology_selector < 0.333) || (total_votes == 0) # pick a random header with votes >= 0
       headers[rand(headers.count)]
-    elsif methodology_selector < 0.666 # pick a random header from the 5 newest headers
-      headers[rand([headers.count,5].min)]
+    elsif methodology_selector < 0.666 # pick a random header from the 20% of the newest  headers
+      headers[rand([1,(0.2*headers.count+1).to_i].max)]
     else # pick a random header favoring headers with more votes (roulette wheel selection algorithm)
       weighted_array = headers.inject([]) { |sum, header| sum << header.votes + (sum.last || 0) }
       picker = rand(total_votes)

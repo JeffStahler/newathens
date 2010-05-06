@@ -44,12 +44,14 @@
 <% unless %w(search).include?(current_controller) %>
   <div class="info-left info-space info-width info-footer info-prev">
     <%= prev_page @posts %>
+    <%= link_to "&laquo; #{@topic.newer_topic}", @topic.newer_topic %>
   </div>
   <div class="info-center info-space info-width info-footer info-page">
     <%= current_page @posts %>
   </div>
   <div class="info-right info-space info-width info-footer info-next">
     <%= next_page @posts %>
+    <%= link_to "#{@topic.older_topic} &raquo;", @topic.older_topic %>
   </div>
   <div class="clear"> </div>
 <% end %>

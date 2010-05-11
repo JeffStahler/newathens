@@ -34,11 +34,57 @@ class HeaderTest < ActiveSupport::TestCase
     assert r.errors.on(:user_id)
   end
   
-  test "random" do
+  test "random with one header" do
+    r1 = Header.make
+    random = Header.random
+    assert random == r1
+  end
+  
+  test "random with two headers" do
     r1 = Header.make
     r2 = Header.make
     random = Header.random
     assert (random == r1) || (random == r2)
+  end
+  
+  test "random with no headers" do
+    Header.destroy_all 
+    assert_nothing_raised do
+      Header.random
+    end
+  end
+
+  test "random with headers all with negative votes" do
+    Header.destroy_all
+    r1 = Header.make 
+    r2 = Header.make
+    r3 = Header.make 
+    r1.vote_down
+    r1.reload
+    r2.vote_down
+    r2.reload
+    r3.vote_down    
+    r3.reload
+    assert_nothing_raised do
+      Header.random
+    end
+  end
+
+  test "random with one header with positive votes" do
+    Header.destroy_all
+    r1 = Header.make 
+    r2 = Header.make
+    r3 = Header.make 
+    r1.vote_down
+    r1.reload
+    r2.vote_down
+    r2.reload
+    r3.vote_up    
+    r3.reload
+    assert_nothing_raised do
+      random = Header.random
+      assert r3 == random
+    end
   end
   
   test "vote_up/vote_down" do
@@ -51,5 +97,68 @@ class HeaderTest < ActiveSupport::TestCase
     r.reload
     assert_equal 0, r.votes
   end
-      
+
+  test "test_randomness" do
+    #use pearsons chi square statistical test to confirm that headers 
+    #are close to what you would expect theoretically.
+    #this test can fail by random chance even if the algorithm is working
+    # however this should only happen once every 254,716,573 tests
+    # therefore, if this test fails, there is probably something wrong
+    # with the random header code.
+
+    total_votes = 0
+    eligibleheaders = 0
+    test_headers = Array.new
+    header_selected_counts = Array.new
+    
+    (0..19).each do |i| 
+      header_selected_counts[i] = 0
+      test_headers[i] = Header.make
+      sleep(1)
+      test_headers[i].description = i.to_s
+      (rand(20)+1).times do
+      	test_headers[i].vote_up
+        test_headers[i].reload
+        total_votes += 1
+      end  
+      if test_headers[i].votes != 0
+        eligibleheaders +=1
+      end
+
+    end
+
+    x = 0
+    num_of_random_calls = 1000
+    (num_of_random_calls).times do
+      x += 1
+      random = Header.random
+      header_selected_counts[random.description.to_i] += 1
+    end
+    theoretical_header_count = Array.new
+    chi_squared_statistic = 0
+    headers = Header.all(:conditions => ['votes >= 0'], :order => 'created_at desc') # find eligible headers
+    prob = 0
+    (0..headers.count-1).each do |k|
+      i = test_headers.index(headers[k])
+      theoretical_header_count[i] = 0
+      if headers[i].votes != nil
+        if k <= (0.2*headers.count)
+           theoretical_header_count[i] = (1/3.to_f)*(1/((0.2*headers.count).to_i).to_f)
+        end
+        theoretical_header_count[i] += (1/3.to_f)*(1/(headers.count).to_f + test_headers[i].votes/total_votes.to_f)
+        theoretical_header_count[i] = num_of_random_calls*theoretical_header_count[i]
+      else
+        theoretical_header_count = 0
+      end
+    if test_headers[i].votes != 0
+      chi_squared_statistic += (((header_selected_counts[i] - theoretical_header_count[i]) ** 2)/theoretical_header_count[i])
+    end
+    end
+ 
+  assert chi_squared_statistic < 80 
+  end
+
+
+
+
 end

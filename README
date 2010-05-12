@@ -29,6 +29,8 @@ autotest
 
 gem install capistrano
 cap deploy
+cap deploy:migrations # if there are db changes
+cap deploy:rollback # if you fucked up
 
 
 == MIT License

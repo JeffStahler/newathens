@@ -3,15 +3,9 @@ require 'test_helper'
 class PostsControllerTest < ActionController::TestCase
 
   def test_index_should_work
+    login!
     get :index
     assert_response :success
-  end
-
-  def test_posts_cannot_be_made_unless_logged_in
-    old_post_count = Post.count
-    post :create, :post => { :topic_id => "1", :body => "this is a test" }
-    assert_equal old_post_count, Post.count
-    assert_redirected_to login_path
   end
 
   def test_posts_can_be_made_if_logged_in
@@ -142,11 +136,13 @@ class PostsControllerTest < ActionController::TestCase
   end
 
   def test_show_action_should_work
+    login!
     get :show, :id => 1
     assert_response :success
   end
 
   def test_locate_action_should_work
+    login!
     get :topic, :id => 1
     assert_redirected_to :controller => 'topics', :action => 'show', :id => '1', :page => '1', :anchor => 'p1'
   end
@@ -194,6 +190,7 @@ class PostsControllerTest < ActionController::TestCase
   end
 
   def test_user_posts_path_should_work
+    login!
     get :index, :user_id => users(:trevor).id
     assert_response :success
     get :index, :user_id => users(:noposts).id

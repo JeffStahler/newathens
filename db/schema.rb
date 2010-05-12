@@ -9,16 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091230090216) do
-
-  create_table "articles", :force => true do |t|
-    t.integer  "user_id"
-    t.string   "title"
-    t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "comments_count", :default => 0, :null => false
-  end
+ActiveRecord::Schema.define(:version => 20100512041911) do
 
   create_table "avatars", :force => true do |t|
     t.integer  "user_id"
@@ -35,35 +26,6 @@ ActiveRecord::Schema.define(:version => 20091230090216) do
     t.string  "name"
     t.integer "position", :default => 0
   end
-
-  create_table "comments", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "resource_id"
-    t.string   "resource_type"
-    t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "config", :force => true do |t|
-    t.integer "associated_id"
-    t.string  "associated_type"
-    t.string  "namespace"
-    t.string  "key",             :limit => 40, :null => false
-    t.string  "value"
-  end
-
-  create_table "events", :force => true do |t|
-    t.string   "title"
-    t.text     "description"
-    t.datetime "date"
-    t.boolean  "reminder"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "events", ["date"], :name => "index_events_on_date"
 
   create_table "forums", :force => true do |t|
     t.integer "category_id"
@@ -109,35 +71,6 @@ ActiveRecord::Schema.define(:version => 20091230090216) do
   create_table "ranks", :force => true do |t|
     t.string  "title"
     t.integer "min_posts"
-  end
-
-  create_table "settings", :force => true do |t|
-    t.string  "title"
-    t.string  "tagline"
-    t.text    "announcement"
-    t.text    "footer"
-    t.string  "theme"
-    t.string  "favicon"
-    t.string  "time_zone"
-    t.boolean "private",           :default => false
-    t.string  "login_message"
-    t.string  "admin_only_create", :default => "",    :null => false
-    t.boolean "clickable_header",  :default => false
-  end
-
-  create_table "subscriptions", :force => true do |t|
-    t.integer "user_id"
-    t.integer "topic_id"
-  end
-
-  create_table "themes", :force => true do |t|
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "attachment_file_name"
-    t.string   "attachment_content_type"
-    t.integer  "attachment_file_size"
-    t.string   "attachment_remote_url"
   end
 
   create_table "topics", :force => true do |t|

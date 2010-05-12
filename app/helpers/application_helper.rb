@@ -5,39 +5,25 @@ module ApplicationHelper
     Array.new(6, '').collect{char[rand(char.size)]}.join
   end
 
-  protected
-
-  def header_image_path
-    if current_controller == 'headers' && %w(edit show).include?(current_action)
-      @header = Header.find(params[:id])
-    else
-      @header = Header.random
-    end
-    @header and @header.attachment.url or "/images/eldorado.jpg"
-  end
-
-  def header_css
-    if @settings.clickable_header
-      return ""
-    else
-      return "<style type=\"text/css\">.header { background: url('#{header_image_path}'); }</style>"
-    end
-  end
-
-  def theme_css
-    return "<style type=\"text/css\">@import url('/stylesheets/application.css');</style>" if @settings.theme.blank?
-    return "<style type=\"text/css\">@import url('#{@settings.theme}');</style>"
-  end
-
   def page_title
     item = [@article, @category, @event, @forum, @header, @message, @topic, @user].compact.first if %w(show edit).include?(current_action)
     page = request.env['PATH_INFO'].delete('/').sub('new','').capitalize unless request.env['PATH_INFO'].nil?
-    page = @settings.tagline if current_controller == 'home'
-    "#{@settings.title}: #{item || page}"
+    title = "NewAthens.org"
+    title << ": #{item || page}" if item.present? || page.present?
+    title
   end
 
-  def favicon_tag
-    return "<link rel=\"shortcut icon\" href=\"#{@settings.favicon}\" />\n" unless @settings.favicon.blank?
+  def header_css
+    if current_controller == 'headers' && %w(edit show).include?(current_action)
+      header = Header.find(params[:id])
+    else
+      header = Header.random
+    end
+    if header
+      "<style type=\"text/css\">.header { background: url('#{header.attachment.url}'); }</style>"
+    else
+      "<style type=\"text/css\">.header { background: url('/images/eldorado.jpg'); }</style>"
+    end
   end
 
   def avatar_for(user)
@@ -64,11 +50,6 @@ module ApplicationHelper
     elsif name == "users" && (current_controller == "avatars" || current_controller == "ranks")
       'current_tab'
     end
-  end
-
-  def enabled?(name)
-    return true if CONFIG['disabled_tabs'].nil?
-    !CONFIG['disabled_tabs'].include?(name)
   end
 
   def is_new?(item)

@@ -3,40 +3,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <meta name="generator" content="http://github.com/trevorturk/eldorado/" />
-  <meta name="description" content="<%=h page_title -%>" />
-  <title><%=h page_title -%></title>
-  <%= render :file => 'shared/rss' unless @settings.private? %>
-  <%= javascript_include_tag "prototype", "audio_player", "calendar_date_select", "prototip", "highlight", :cache => true %>
-  <%= favicon_tag %>
+  <title><%= page_title -%></title>
+  <link rel="shortcut icon" href="http://s3.newathens.org/files/favicon.ico" />
+  <%= javascript_include_tag "prototype", "prototip", "audio_player", "highlight", :cache => true %>
+  <%= stylesheet_link_tag("application") %>
   <%= header_css %>
-  <%= theme_css %>
-  <script type="text/javascript">
-    hljs.initHighlightingOnLoad();
-  </script>
 </head>
 <body>
   <div class="wrapper">
-    <%= render :file => 'shared/reminders' unless locked_out? -%>
     <div class="header">
-      <% if @settings.clickable_header %>
-        <a href="<%= root_path %>"><img src="<%= header_image_path %>"/></a>
-      <% else %>
-        <h1><%= link_to h(@settings.title), root_path -%></h1>
-        <div class="tagline"><%=h @settings.tagline -%></div>
-      <% end %>
-      <%= render :file => 'shared/tabs' unless locked_out? -%>
+      <h1><%= link_to 'NewAthens.org', root_path -%></h1>
+      <div class="tagline">All an elaborate, unapproachable, unprofitable, retributive joke</div>
+      <%= render :file => 'shared/tabs' if logged_in? -%>
     </div>
     <div class="content">
       <%= render :file => 'shared/nav' %>
-      <div class="announcement"><%= @settings.announcement if current_controller == 'home' -%></div>
       <%= render :partial => 'search/form.html.erb' if current_controller == 'search' -%>
       <%= render :file => 'shared/flash' -%>
       <%= yield %>
       <%= render :file => 'shared/nav2' -%>
-      <%= render :file => 'shared/stats' unless locked_out? -%>
+      <%= render :file => 'shared/stats' if logged_in? -%>
     </div>
-    <div class="footer"><%= @settings.footer -%></div>
+    <div class="footer"> </div>
   </div>
+  <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-2350501-10']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body>
 </html>

@@ -3,10 +3,8 @@
     <span class="top"><%=t :search %></span>
     <p>
       <select id="type" name="type" onchange="javascript:$('query').focus();">
-        <option<%= ' selected="selected"' if params[:type] == 'articles' || current_controller == 'articles' %> value='articles'><%=t :articles %></option>
         <option<%= ' selected="selected"' if params[:type] == 'avatars' || current_controller == 'avatars' %> value='avatars'><%=t :avatars %></option>
         <option<%= ' selected="selected"' if params[:type] == 'messages' || current_controller == 'messages' %> value='messages'><%=t :chat %></option>
-        <option<%= ' selected="selected"' if params[:type] == 'events' || current_controller == 'events' %> value='events'><%=t :events %></option>
         <option<%= ' selected="selected"' if %w(uploads files).include?(params[:type]) || current_controller == 'uploads' %> value='files'><%=t :files %></option>
         <option<%= ' selected="selected"' if params[:type] == 'headers' || current_controller == 'headers' %> value='headers'><%=t :headers %></option>
         <option<%= ' selected="selected"' if params[:type] == 'posts' || current_controller == 'posts' %> value='posts'><%=t :posts %></option>

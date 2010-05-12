@@ -1,4 +1,6 @@
-<% if current_controller == 'categories' %>
+<% if current_controller == 'home' %>
+  <%= render :partial => 'messages/mini' %>
+<% elsif current_controller == 'categories' %>
   <div class="info-left">
     <span class="title"><%=h @category %></span>
     <span class="detail"> &laquo; <%= @forums.map { |forum| link_to "#{h(forum)}", forum } * ", " %></span>
@@ -23,9 +25,7 @@
           <th class="tcl tcf"><%=t :forum %></th>
         <% end %>
         <th class="tcm"><%=t :replies %></th>
-        <% unless current_controller == 'home' %>
-          <th class="tcm"><%=t :views %></th>
-        <% end %>
+        <th class="tcm"><%=t :views %></th>
         <th class="tcr"><%= link_to I18n.t(:activity), posts_path %></th>
       </tr>
     </thead>
@@ -43,9 +43,7 @@
             </td>
           <% end %>
           <td class="tcm"><%= number_with_delimiter(topic.replies) %></td>
-          <% unless current_controller == 'home' %>
-            <td class="tcm"><%= number_with_delimiter(topic.views) %></td>
-          <% end %>
+          <td class="tcm"><%= number_with_delimiter(topic.views) %></td>
           <td class="tcr">
             <%= link_to time_ago_or_time_stamp(topic.last_post_at), show_new_topic_path(topic) %> 
             <%=t :by %> <%=h topic.last_poster %>

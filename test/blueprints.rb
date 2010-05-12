@@ -16,11 +16,6 @@ Header.blueprint do
   attachment_file_name { Sham.file_name }
 end
 
-Theme.blueprint do
-  user { User.make }
-  attachment_file_name { Sham.file_name }
-end
-
 Upload.blueprint do
   user { User.make }
   attachment_file_name { Sham.file_name }

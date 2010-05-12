@@ -3,6 +3,7 @@ require 'test_helper'
 class RanksControllerTest < ActionController::TestCase
   
   def test_should_get_index
+    login!
     get :index
     assert_response :success
   end
@@ -20,11 +21,13 @@ class RanksControllerTest < ActionController::TestCase
   end
   
   def test_should_not_get_new_if_not_admin
+    login!
     get :new
     assert_redirected_to root_path
   end
   
   def test_should_not_get_edit_unless_admin
+    login!
     get :edit, :id => 1
     assert_redirected_to root_path
   end
@@ -36,6 +39,7 @@ class RanksControllerTest < ActionController::TestCase
   end
   
   def test_should_not_update_topic_if_not_admin
+    login!
     put :update, :id => 1, :rank => { :title => "bogus!"}
     assert_redirected_to root_path
     assert_equal "no_posts", ranks(:one).title
@@ -57,6 +61,7 @@ class RanksControllerTest < ActionController::TestCase
   end
   
   def test_should_not_destroy_if_not_admin
+    login!
     old_count = Rank.count
     delete :destroy, :id => 1
     assert_equal old_count, Rank.count

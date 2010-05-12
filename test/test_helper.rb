@@ -8,23 +8,23 @@ class ActiveSupport::TestCase
   self.use_instantiated_fixtures  = false
   fixtures :all
 
-  setup { Sham.reset }
-  
+  setup do
+    Sham.reset
+  end
+
   def login!(options = {})
     user = User.make(options)
     @request.session[:user_id] = user.id
     user
   end
-  
+
+  def logout!
+    @request.session[:user_id] = nil
+  end
+
   # TODO remove when all moved over to machinist
   def login_as(user)
     @request.session[:user_id] = user ? users(user).id : nil
     @request.session[:online_at] = Time.now.utc
   end
-  
-  def private_site
-    settings = Setting.find(:first)
-    settings.destroy
-  end
-  
 end

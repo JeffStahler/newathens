@@ -18,6 +18,13 @@ script/server
 # http://localhost:3000/
 
 
+== Test
+
+rake db:test:prepare
+gem install autotest-rails
+autotest
+
+
 == Deploy
 
 gem install capistrano

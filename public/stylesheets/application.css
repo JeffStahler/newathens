@@ -17,12 +17,12 @@ h1,h1 a:link,h1 a:visited,h1 a:hover,h1 a:active{text-decoration:none;color:#fff
 h1 a:hover,h1 a:active{text-decoration:underline;}
 h3{font-size:14px;font-weight:400;}
 .tagline{font-family:'Lucida Grande', Verdana, Arial, Sans-Serif;font-size:10px;color:#fff;padding:0 40px;}
-.tabs{position:absolute;bottom:0;font-size:10px;margin:-18px 0 0 14px;padding:0;}
+.tabs{position:absolute;bottom:0;font-size:10px;margin:-18px 0 0 14px;padding:0; background-image: url('/images/trans_bg.png'); }
 .tabs li{display:inline;margin:0 2px;}
 .tabs,.tabs li a{padding:6px 12px;}
-.tabs li a{color:#FFF;text-decoration:none;}
-.tabs li a:hover{background:#333;color:#eee;}
-.tabs li.current_tab a,.tabs li.current_tab a:hover{color:#333;background:#FFF;}
+.tabs li a{color:#eee;text-decoration:none;}
+.tabs li a:hover{background-image: url('/images/trans_bg.png'); color:#fff;}
+.tabs li.current_tab a,.tabs li.current_tab a:hover{color:#000; background: #fff; border: 1px solid #666; border-bottom: 0;}
 .nav{height:26px;border:1px solid #ccc;background:#f1f1f1;margin:10px 0;}
 .nav-left{float:left;margin:6px 0 0 5px;}
 .nav-right{float:right;margin:6px 5px 0 0;}

@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   include AuthenticationSystem, ExceptionHandler
 
-  before_filter :force_login, :auth_token_login, :check_bans, :set_timezone, :update_online_at, :get_layout_vars, :set_locale
+  before_filter :auth_token_login, :require_login, :check_bans, :set_timezone, :update_online_at, :get_layout_vars, :set_locale
   helper_method :current_action, :current_controller, :current_user, :logged_in?, :logged_out?, :is_online?, :admin?, :can_edit?
 
   rescue_from ActiveRecord::RecordNotFound, :with => :not_found
@@ -16,10 +16,6 @@ class ApplicationController < ActionController::Base
 
   def redirect_home
     redirect_to root_path and return false
-  end
-
-  def force_login
-    redirect_to login_path unless logged_in?
   end
 
   def set_timezone

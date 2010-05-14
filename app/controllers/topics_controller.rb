@@ -1,6 +1,5 @@
 class TopicsController < ApplicationController
 
-  before_filter :require_login, :except => [:index, :show, :show_new, :unknown_request]
   before_filter :can_edit, :only => [:edit, :update, :destroy]
   before_filter :clean_params, :only => [:create, :update]
 

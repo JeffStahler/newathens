@@ -1,13 +1,12 @@
 class UploadsController < ApplicationController
-  
+
   before_filter :redirect_home, :only => [:show, :edit, :update]
-  before_filter :require_login, :except => [:index]
   before_filter :can_edit, :only => [:destroy]
-  
+
   rescue_from Errno::ENOENT, :with => :url_upload_not_found
   rescue_from Errno::ETIMEDOUT, :with => :url_upload_not_found
   rescue_from OpenURI::HTTPError, :with => :url_upload_not_found
-  
+
   def index
     @uploads = Upload.paginate(:page => params[:page], :order => 'updated_at desc')
   end

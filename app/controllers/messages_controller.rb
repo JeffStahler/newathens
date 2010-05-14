@@ -1,10 +1,9 @@
 class MessagesController < ApplicationController
-  
+
   before_filter :redirect_home, :only => [:new, :edit, :update]
-  before_filter :require_login, :only => [:create]
   before_filter :can_edit, :only => [:destroy]
   skip_filter :update_online_at, :get_layout_vars, :only => [:create, :more, :refresh, :refresh_chatters]
-  
+
   def index
     if logged_in?
       @messages = Message.get(current_user.chatting_at)
@@ -18,11 +17,11 @@ class MessagesController < ApplicationController
       @last_message = @messages.map(&:id).min
     end
   end
-  
+
   def show
     @message = Message.find(params[:id])
   end
-  
+
   def create
     @message = current_user.messages.build(params[:message])
     if @message.save
@@ -33,13 +32,13 @@ class MessagesController < ApplicationController
       render :nothing => true
     end
   end
-  
+
   def destroy
     @message = Message.find(params[:id])
     @message.destroy
     redirect_to chat_path
   end
-  
+
   def more
     @messages = Message.more(params[:id])
     @last_message = @messages.map(&:id).min unless @messages.empty?
@@ -49,7 +48,7 @@ class MessagesController < ApplicationController
       page.remove 'messages-more' if @messages.size < 100
     end
   end
-  
+
   def refresh
     @messages = Message.refresh(session[:message_id], current_user)
     if !@messages.empty?
@@ -66,7 +65,7 @@ class MessagesController < ApplicationController
       render :nothing => true
     end
   end
-  
+
   def refresh_chatters
     current_user.update_attribute('chatting_at', Time.now.utc) if logged_in?
     @chatters = User.chatting
@@ -76,5 +75,5 @@ class MessagesController < ApplicationController
         page.replace_html 'chatters', :partial => 'chatters', :object => @chatters
       end
     end
-  end  
+  end
 end

@@ -3,7 +3,6 @@
 All an elaborate, unapproachable, unprofitable, retributive joke
 https://newathens.org
 
-
 == Install
 
 git clone git://github.com/trevorturk/newathens.git
@@ -17,21 +16,11 @@ rake db:schema:load
 script/server
 # http://localhost:3000/
 
-
 == Test
 
 rake db:test:prepare
 gem install autotest-rails
 autotest
-
-
-== Deploy
-
-gem install capistrano
-cap deploy
-cap deploy:migrations # if there are db changes
-cap deploy:rollback # if you fucked up
-
 
 == MIT License
 

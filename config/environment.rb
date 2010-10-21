@@ -14,6 +14,6 @@ Rails::Initializer.run do |config|
   config.gem "right_aws"
   config.gem "right_http_connection"
   config.gem "searchlogic"
-  config.gem "will_paginate"
+  config.gem "will_paginate", :version => '2.3.15'
   config.gem "hoptoad_notifier"
 end

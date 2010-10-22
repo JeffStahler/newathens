@@ -18,6 +18,7 @@ Rails::Initializer.run do |config|
   config.gem "will_paginate", :version => '2.3.15'
   config.gem "hoptoad_notifier"
   config.gem "rack-no-www"
+  require 'aws/s3'
   require 'rack/no-www'
   config.middleware.use Rack::NoWWW
 end

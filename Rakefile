@@ -26,7 +26,7 @@ namespace :heroku do
       puts "[#{Time.now}] heroku:backup complete"
     rescue Exception => e
       require 'toadhopper'
-      Toadhopper(ENV['hoptoad_key']).post!(e)
+      Toadhopper(ENV['HOPTOAD_API_KEY']).post!(e)
     end
   end
 end

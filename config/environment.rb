@@ -11,6 +11,7 @@ Rails::Initializer.run do |config|
   config.frameworks -= [:active_resource]
   config.action_controller.session = {:key => CONFIG['session_key'], :secret => CONFIG['session_secret']}
   config.gem "paperclip"
+  config.gem "aws-s3"
   config.gem "right_aws"
   config.gem "right_http_connection"
   config.gem "searchlogic"

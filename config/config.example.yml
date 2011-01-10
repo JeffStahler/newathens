@@ -46,3 +46,8 @@ production:
 
   # DISABLE TABS (optional)
   disabled_tabs: # list tabs that want to hide from users (e.g. "blog events headers")
+
+  # PUSHER (http://pusherapp.com/)
+  pusher_app_id:
+  pusher_key:
+  pusher_secret:

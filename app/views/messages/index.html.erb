@@ -7,9 +7,9 @@
 <% if logged_in? %>
   <div class="info-left" style="width:100%;">
     <% @message = Message.new unless @message %>
-    <% remote_form_for @message, :loading => "$('message_body').clear();" do |f| -%>
-      <%= f.text_field :body, :value => '', :style => "width:70%;" %>&nbsp; 
-      <%= submit_tag I18n.t(:submit) %>&nbsp; 
+    <% form_for @message do |f| -%>
+      <%= f.text_field :body, :value => '', :autocomplete => "off", :style => "width:70%;" %>&nbsp;
+      <%= submit_tag I18n.t(:submit) %>&nbsp;
       <%= link_to I18n.t(:upload_a_new_file), new_upload_path, :popup => ['height=530,width=820,status=1'] %>
     <% end %>
   </div>
@@ -26,6 +26,22 @@
   <%= render :partial => 'more', :object => @last_message unless @messages.size < 50 %>
 </p>
 
-<%= periodically_call_remote :url => refresh_messages_path, :method => 'get', :frequency => 3 %>
-<%= periodically_call_remote :url => refresh_chatters_path, :method => 'get', :frequency => 10 %>
-<%= javascript_tag "$('message_body').focus();$('message_body').writeAttribute('autocomplete', 'off');" if logged_in? %>
+<script>
+  $('#message_body').focus();
+
+  var ajaxFormOptions = {
+    beforeSubmit: function() {
+      $('#new_message').clearForm();
+    }
+  };
+  $('#new_message').ajaxForm(ajaxFormOptions);
+
+  var pusher = new Pusher('d9bcb9fb252f483991be');
+  var channel = pusher.subscribe('messages');
+
+  channel.bind('message', function(data) {
+    $('#messages-index').prepend(data.message);
+  });
+</script>
+
+<%= periodically_call_remote :url => refresh_chatters_path, :method => 'get', :frequency => 30 %>

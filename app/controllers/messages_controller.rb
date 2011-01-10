@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
 
   before_filter :redirect_home, :only => [:new, :edit, :update]
   before_filter :can_edit, :only => [:destroy]
-  skip_filter :update_online_at, :get_layout_vars, :only => [:create, :more, :refresh, :refresh_chatters]
+  skip_filter :update_online_at, :get_layout_vars, :only => [:create, :more, :refresh_chatters]
 
   def index
     if logged_in?
@@ -25,9 +25,7 @@ class MessagesController < ApplicationController
   def create
     @message = current_user.messages.build(params[:message])
     if @message.save
-      render :update do |page|
-        page.insert_html :top, 'messages-index', :partial => 'message', :object => @message
-      end
+      Pusher['messages'].trigger('message', {:message => (render :partial => @message)})
     else
       render :nothing => true
     end
@@ -46,23 +44,6 @@ class MessagesController < ApplicationController
       page.insert_html :bottom, 'messages-index', :partial => 'messages', :object => @messages
       page.replace_html 'messages-more', :partial => 'more', :object => @last_message
       page.remove 'messages-more' if @messages.size < 100
-    end
-  end
-
-  def refresh
-    @messages = Message.refresh(session[:message_id], current_user)
-    if !@messages.empty?
-      session[:message_id] = @messages.map(&:id).max
-      render :update do |page|
-        @messages.each do |message|
-          page << "if ($('message-#{message.id}')){"
-          page << '}else{'
-          page.insert_html :top, 'messages-index', :partial => 'messages', :object => message
-          page << '}'
-        end
-      end
-    else
-      render :nothing => true
     end
   end
 

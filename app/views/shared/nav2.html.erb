@@ -4,7 +4,7 @@
     <%= link_to I18n.t(:users), users_path %> &raquo; <%=t :avatars %>
   </div>
   <div class="info-right">
-    <%= will_paginate @avatars, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) %>
+    <%= will_paginate @avatars, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) %>
   </div>
 <% end %>
 
@@ -26,7 +26,7 @@
       <%= link_to I18n.t(:new_forum), new_forum_path(:category_id => @category.id) %> &nbsp;
       <%= link_to I18n.t(:edit_category), edit_category_path(@category) %>
     <% end %>
-    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) %>
+    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) %>
   </div>
 <% end %>
 
@@ -54,13 +54,13 @@
     <% if admin? %>
       <%= link_to I18n.t(:edit_forum), edit_forum_path(@forum) %>
     <% end %>
-    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) %>
+    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) %>
   </div>
 <% end %>
 
 <% if current_controller == 'headers' and current_action == 'index' %>
   <div class="info-right">
-    <%= will_paginate @headers, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) %>
+    <%= will_paginate @headers, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) %>
   </div>
 <% end %>
 
@@ -113,13 +113,13 @@
 
 <% if current_controller == 'search' %>
   <div class="info-right" style="margin-top:5px;">
-    <%= will_paginate @events, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) unless @events.blank? %>
-    <%= will_paginate @headers, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) unless @headers.blank? %>
-    <%= will_paginate @messages, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) unless @messages.blank? %>
-    <%= will_paginate @posts, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) unless @posts.blank? %>
-    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) unless @topics.blank? %>
-    <%= will_paginate @uploads, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) unless @uploads.blank? %>
-    <%= will_paginate @users, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) unless @users.blank? %>
+    <%= will_paginate @events, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) unless @events.blank? %>
+    <%= will_paginate @headers, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) unless @headers.blank? %>
+    <%= will_paginate @messages, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) unless @messages.blank? %>
+    <%= will_paginate @posts, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) unless @posts.blank? %>
+    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) unless @topics.blank? %>
+    <%= will_paginate @uploads, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) unless @uploads.blank? %>
+    <%= will_paginate @users, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) unless @users.blank? %>
   </div>
 <% end %>
 
@@ -129,7 +129,7 @@
     <%= link_to I18n.t(:forum), forum_root_path %> &raquo; <%=t :all_topics %>
   </div>
   <div class="info-right">
-    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) %>
+    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) %>
   </div>
 <% end %>
 
@@ -163,7 +163,7 @@
 
 <% if current_controller == 'uploads' and current_action == 'index' %>
   <div class="info-right">
-    <%= will_paginate @uploads, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) %>
+    <%= will_paginate @uploads, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) %>
   </div>
 <% end %>
 
@@ -176,7 +176,7 @@
 
 <% if current_controller == 'users' and current_action == 'index' %>
   <div class="info-right">
-    <%= will_paginate @users, :inner_window => 1, :outer_window => 0, :prev_label => '&laquo; '+I18n.t(:prev) %>
+    <%= will_paginate @users, :inner_window => 1, :outer_window => 0, :previous_label => '&laquo; '+I18n.t(:prev) %>
   </div>
 <% end %>
 

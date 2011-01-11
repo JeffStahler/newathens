@@ -48,7 +48,7 @@ class MessagesController < ApplicationController
   end
   
   def refresh
-    redirect_to logout_path # deprecated
+    render :nothing => true # deprecated
   end
   
   def refresh_chatters

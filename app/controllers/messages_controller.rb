@@ -46,7 +46,11 @@ class MessagesController < ApplicationController
       page.remove 'messages-more' if @messages.size < 100
     end
   end
-
+  
+  def refresh
+    redirect_to logout_path # deprecated
+  end
+  
   def refresh_chatters
     current_user.update_attribute('chatting_at', Time.now.utc) if logged_in?
     @chatters = User.chatting

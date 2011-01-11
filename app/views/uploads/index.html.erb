@@ -18,7 +18,7 @@
             <%= link_to truncate(h(upload), :length => 25), upload.attachment.url %>
             
             <% unless current_controller == 'home' %>
-              <%= link_to_function '(&raquo;)', "$('mp3-#{upload.attachment.url}').toggle()" if upload.is_mp3? %>
+              <%= link_to_function '(&raquo;)', "$('#mp3-#{upload.attachment.url}').toggle()" if upload.is_mp3? %>
             <% end %>
             
             <%=t :by %> <%=h upload.user %>

@@ -17,11 +17,11 @@
       <%= submit_tag I18n.t(:post_topic), :disable_with => I18n.t(:post_topic) %>&nbsp;
       <%= link_to I18n.t(:upload_a_new_file), new_upload_path, :popup => ['height=520,width=820'] %> &nbsp;
       <% if current_action != 'new' %>
-        <%= link_to_function I18n.t(:cancel), "$('action').toggle()" %>
+        <%= link_to_function I18n.t(:cancel), "$('#action').toggle()" %>
       <% else %>
         <%= link_to I18n.t(:cancel), forum_root_path %>
       <% end %>
     </p>
   </div>
 <% end %>
-<%= javascript_tag "$('topic_title').focus();" %>
+<%= javascript_tag "$('#topic_title').focus();" %>

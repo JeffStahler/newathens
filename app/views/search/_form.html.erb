@@ -2,7 +2,7 @@
   <div id="search" class="box" id="box-search-form" <%= 'style="display:none;"' unless current_controller == 'search' %>>
     <span class="top"><%=t :search %></span>
     <p>
-      <select id="type" name="type" onchange="javascript:$('query').focus();">
+      <select id="type" name="type" onchange="javascript:$('#query').focus();">
         <option<%= ' selected="selected"' if params[:type] == 'avatars' || current_controller == 'avatars' %> value='avatars'><%=t :avatars %></option>
         <option<%= ' selected="selected"' if params[:type] == 'messages' || current_controller == 'messages' %> value='messages'><%=t :chat %></option>
         <option<%= ' selected="selected"' if %w(uploads files).include?(params[:type]) || current_controller == 'uploads' %> value='files'><%=t :files %></option>
@@ -19,4 +19,4 @@
     </p>
   </div>
 <% end %>
-<%= javascript_tag "$('query').focus();" %>
+<%= javascript_tag "$('#query').focus();" %>

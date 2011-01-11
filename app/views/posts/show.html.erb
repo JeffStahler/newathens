@@ -56,12 +56,12 @@
       </td>
       <td class="body links">
         <span id ="post-link-<%= post.id %>">
-          <%= link_to_function I18n.t(:link), "$('post-link-#{post.id}').toggle();$('post-links-#{post.id}').toggle();" %>
+          <%= link_to_function I18n.t(:link), "$('#post-link-#{post.id}').toggle();$('#post-links-#{post.id}').toggle();" %>
         </span>
         <span id="post-links-<%= post.id %>" style="display:none;">
           <%= link_to I18n.t(:post), post %>
           &nbsp; <%= link_to I18n.t(:topic), topic_post_path(post) %>
-          &nbsp; <%= link_to_function '('+I18n.t(:x)+')', "$('post-link-#{post.id}').toggle();$('post-links-#{post.id}').toggle();" %>
+          &nbsp; <%= link_to_function '('+I18n.t(:x)+')', "$('#post-link-#{post.id}').toggle();$('#post-links-#{post.id}').toggle();" %>
         </span>   
         <% if %w(posts search users).include?(current_controller) %>
           <% if logged_in? && !post.topic.locked %>

@@ -6,14 +6,14 @@
     <p id="file_upload"><%= f.file_field :attachment %></p>
     <p id="url_upload" style="display:none;">
       <%= f.text_field :attachment_url, :class => 'text-field' %>&nbsp; 
-      <%= link_to_function '('+I18n.t(:x)+')', "$('file_upload').toggle();$('upload_url').clear();$('url_upload').toggle()" %>
+      <%= link_to_function '('+I18n.t(:x)+')', "$('#file_upload').toggle();$('#upload_url').val('');$('#url_upload').toggle();" %>
     </p>
     <p>
       <%= submit_tag I18n.t(:upload), :disable_with => I18n.t(:upload) %>&nbsp; 
       <% if current_action != 'new' %>
-        <%= link_to_function I18n.t(:cancel), "$('action').toggle()" %>
+        <%= link_to_function I18n.t(:cancel), "$('#action').toggle()" %>
       <% else %>
-        <%= link_to_function I18n.t(:upload_via_url), "$('file_upload').toggle();$('url_upload').toggle();$('upload_attachment_url').clear();$('upload_attachment_url').focus()" %> &nbsp; 
+        <%= link_to_function I18n.t(:upload_via_url), "$('#file_upload').toggle();$('#url_upload').toggle();$('#upload_attachment_url').val('');$('#upload_attachment_url').focus()" %> &nbsp; 
         <%= link_to I18n.t(:cancel), files_path %>
       <% end %>
     </p>

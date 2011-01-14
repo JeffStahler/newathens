@@ -37,18 +37,20 @@ $(document).ready(function(){
   };
   $('#new_message').ajaxForm(ajaxFormOptions);
 
-  var focus = 1;
+  var focus = true;
   var count = 0;
   var title = document.title;
 
   $(window).focus(function() {
-    focus = 1;
+    focus = true;
     count = 0;
-    document.title = title;
+    setTimeout(function () {
+      document.title = title;
+    }, 200);
   });
 
   $(window).blur(function() {
-    focus = 0;
+    focus = false;
   });
 
   var pusher = new Pusher('d9bcb9fb252f483991be');
@@ -56,9 +58,11 @@ $(document).ready(function(){
 
   channel.bind('message', function(data) {
     $('#messages-index').prepend(data.message);
-    if (focus == 0) {
+    if (focus == false) {
       count++;
-      document.title = '(' + count + ') ' + title;
+      setTimeout(function () {
+        document.title = '(' + count + ') ' + title;
+      }, 200);
     }
   });
 });

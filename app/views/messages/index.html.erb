@@ -27,6 +27,7 @@
 </p>
 
 <script>
+$(document).ready(function(){
   $('#message_body').focus();
 
   var ajaxFormOptions = {
@@ -36,12 +37,31 @@
   };
   $('#new_message').ajaxForm(ajaxFormOptions);
 
+  var focus = true;
+  var count = 0;
+  var title = document.title;
+
+  $(window).focus(function() {
+    focus = true;
+    count = 0;
+    document.title = title;
+  });
+
+  $(window).blur(function() {
+    focus = false;
+  });
+
   var pusher = new Pusher('d9bcb9fb252f483991be');
   var channel = pusher.subscribe('messages');
 
   channel.bind('message', function(data) {
     $('#messages-index').prepend(data.message);
+    if (focus == false) {
+      count++;
+      document.title = '('+count+') '+title;
+    }
   });
+});
 </script>
 
 <%= periodically_call_remote :url => refresh_chatters_path, :method => 'get', :frequency => 15 %>
